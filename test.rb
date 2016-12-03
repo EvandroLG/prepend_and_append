@@ -1,17 +1,24 @@
 require 'test/unit'
-require_relative 'prepend_and_append'
+require_relative 'lib/prepend_and_append'
 
 class PrependAndAppendTest < Test::Unit::TestCase
+
+  def setup
+    if defined? PrependAndAppendTest::Human
+      return
+    end
+
+    self.class.const_set :Human, Class.new {
+      include PrependAndAppend
+      def say() 'hello!'; end
+    }
+  end
+
   test 'exists module' do
     assert defined?(PrependAndAppend)
   end
 
   test 'calls block after method scope' do
-    class Human
-      include PrependAndAppend
-      def say() 'hello!'; end
-    end
-
     human = Human.new
     human.append('say') { 'hi!' }
 
@@ -19,14 +26,9 @@ class PrependAndAppendTest < Test::Unit::TestCase
   end
 
   test 'calls block before method scope' do
-    class Human
-      include PrependAndAppend
-      def say() 'hello!'; end
-    end
-
     human = Human.new
-    human.append('say') { 'hi!' }
+    human.prepend('say') { nil }
 
-    assert_equal 'hi!', human.say
+    assert_equal nil, human.say
   end
 end
