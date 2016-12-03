@@ -2,7 +2,9 @@
 A simple Ruby module to append/prepend blocks of in any method from a class
 
 ## Installation
-`gem install prepend_and_append`
+```shell
+gem install prepend_and_append
+```
 
 ## Methods
 * M.prepend *methods, &block
